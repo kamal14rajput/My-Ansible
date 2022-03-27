@@ -1,0 +1,11 @@
+--- #creating resource group
+- hosts: localhost
+  connection: local
+  tasks:
+  - name: rg demo
+    azure_rm_resourcegroup:
+       name: pvc_rg
+       location: eastus
+    register: rg
+  - debug:
+       var: rg
