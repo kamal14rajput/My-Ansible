@@ -1,0 +1,15 @@
+--- #creating virtual network
+- hosts: localhost
+  connection: local
+  tasks:
+    - name: Vnet
+      azure_rm_virtualnetwork:
+        resource_group: pvc_rg
+        name: pvc_rg
+        address_prefix: "10.0.0.0/16"
+    - name: add subnet in Vnet
+      azure_rm_subnet:
+        resource_group: pvc_rg
+        name: pvc-subnet
+        address_prefix: "10.0.1.0/24"
+        virtual_network: pvc-vnet 
