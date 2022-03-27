@@ -1,0 +1,11 @@
+1. ansible practice -b -m apt -a "pkg=nginx state=present" #practice is a group name.
+
+2. ansible practice -b -m apt -a "pkg=nginx state=latest"
+
+3. ansible practice -b -m apt -a "pkg=nginx state=absent"
+
+4. ansible practice -b -m service -a "name=nginx state=started"
+
+5. absible practice -b -m user -a "name=kamal"
+
+6. ansible practice -b -m copy -a "src=file1 dest=/tmp"
