@@ -1,0 +1,11 @@
+--- #conditional playbook
+- hosts: practice
+  user: kamal
+  connection: yes
+  tasks:
+          - name: install nginx server for ubuntu
+            command: apt-get -y install nginx
+            when: kamal_os_family == "Ubuntu"
+          - name: install nginx server for redhat
+            command: yum -y install nginx
+            when: kamal_os_family == "Redhat"
