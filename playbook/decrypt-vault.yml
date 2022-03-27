@@ -1,0 +1,10 @@
+--- #My ansible practice YML file
+- hosts: practice
+  user: kamal
+  become: yes
+  connection: ssh
+  vars:
+          pkname: httpd
+  tasks:
+          - name: install httpd server on ubuntu
+            action: apt name='{{pkname}}' state=installed
