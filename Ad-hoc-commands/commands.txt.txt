@@ -1,0 +1,11 @@
+1. ansible practice -a "ls" #practice is a group-name
+
+2. ansible practice[0] -a "touch file"
+
+3. ansible all -a "touch file1"
+
+4. ansible practice -a "ls -al"
+
+5. ansible practice -a "sudo apt install nginx -y"
+
+6. ansible practice -ba "apt remove nginx -y"
