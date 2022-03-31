@@ -1,0 +1,69 @@
+--- #configuration for node app
+- hosts: appdeploy
+  user: azureuser
+  become: yes
+  gather_facts: yes
+  vars:
+          git_repo_url: https://github.com/BL-AniketChile/NodeJs-API.git
+          repo_path: /opt/
+          repo_branch: master
+          pkname: git
+          pkname1: nginx
+          pkname2: nodejs
+          pkname3: npm
+          npm_path: /usr/bin
+          pkname4: mongodb
+  tasks:
+        - name: update the packages
+          apt:
+                  update_cache: yes
+        - name: install git on server
+          action: apt name='{{pkname}}' state=present
+        - name: install nginx on server
+          action: apt name='{{pkname1}}' state=present
+        - name: install nodejs on server
+          action: apt name='{{pkname2}}' state=present
+        - name: install mongodb
+          action: apt name='{{pkname4}}' state=present
+        - name: install npm
+          action: apt name='{{pkname3}}' state=present
+        - name: clone repository
+          git:
+                  repo: '{{git_repo_url}}'
+                  dest: '{{repo_path}}'
+                  version: '{{repo_branch}}'
+                  accept_hostkey: yes
+                  update: no
+        - name: start application
+          shell: "nohup npm start &"
+          args:
+                  chdir: "/opt"
+                  # - name: run npm
+                  # args:
+                  # chdir: '{{repo_path}}'
+                  # shell: nohup npm start
+                  # - name: forever for run nodejs in background
+          # npm: name=forever global=yes state=present
+          # - name: start forever module
+          # command: forever start /opt/
+        - name: remove default file from sites-available
+          file:
+                  path: /etc/nginx/sites-available/default
+                  state: absent
+        - name: remove default file from sites-enabled
+          file:
+                  path: /etc/nginx/sites-enabled/default
+                  state: absent
+        - name: copy default to sites-available
+          copy: src=/home/azureuser/default dest=/etc/nginx/sites-available/
+        - name:   copy nodejs file to node-server
+          copy: src=/home/azureuser/nodejs dest=/etc/nginx/sites-available/
+        - name: create a symbolic link
+          file:
+                  src: /etc/nginx/sites-available/nodejs
+                  dest: /etc/nginx/sites-enabled/nodejs
+                  state: link
+        - name: Restart nginx service
+          service:
+                  name: nginx
+                  state: restarted
